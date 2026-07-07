@@ -44,7 +44,6 @@ const PROTEIN_NET = ['STRING db', 'Cytoscape', 'PPI network', 'ADMET']
 
 const BIO_AI = [
   'ESM-2',
-  'AlphaFold2',
   'ProtBERT',
   'DNABERT',
   'Evo (genomic LLM)',
@@ -123,7 +122,7 @@ function Background() {
       size: 12 + Math.random() * 5,
       text,
       colorKey,
-      alpha: 0.08 + Math.random() * 0.07,
+      alpha: 0.18 + Math.random() * 0.14,
       phase: Math.random() * Math.PI * 2,
     }))
 

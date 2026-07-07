@@ -18,7 +18,7 @@ function App() {
               </a>
             </p>
           </div>
-          <img className="avatar" src="/profile.jpg" alt="Yashraj" />
+          <img className="avatar" src={`${import.meta.env.BASE_URL}profile.jpg`} alt="Yashraj" />
         </header>
 
       <section className="resume-section">
@@ -48,6 +48,7 @@ function App() {
         <div className="entry">
           <div className="entry-head">
             <h3>B.Sc. (Hons) Microbiology — GD Goenka University, Gurugram</h3>
+            <span className="entry-date">2021–2024</span>
           </div>
           <p>CGPA: 8.95/10</p>
         </div>
@@ -59,7 +60,7 @@ function App() {
         <div className="entry">
           <div className="entry-head">
             <h3>Master's Thesis: Computational and Experimental Approaches to Study HIV-1 Subtypes B and C Biology</h3>
-            <span className="entry-date">2021–2024</span>
+            <span className="entry-date">2024–2026</span>
           </div>
           <ul>
             <li>
@@ -77,6 +78,7 @@ function App() {
         <div className="entry">
           <div className="entry-head">
             <h3>Bachelor's Major Project: Chalcone-Based Derivatives as Antimicrobial Agents — In-silico Design &amp; ADMET Studies</h3>
+            <span className="entry-date">2021–2024</span>
           </div>
           <ul>
             <li>

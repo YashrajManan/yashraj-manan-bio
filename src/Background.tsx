@@ -9,10 +9,71 @@ interface Node {
   hub: boolean
 }
 
+interface FloatingLabel {
+  x: number
+  y: number
+  vx: number
+  vy: number
+  size: number
+  text: string
+  colorKey: 'neutral' | 'a' | 'b'
+  alpha: number
+  phase: number
+}
+
 const NODE_COUNT = 90
 const LINK_DIST = 150
 const MOUSE_DIST = 190
 const HELIX_STRANDS = 3
+
+const CODE_ALGO = [
+  'for i in range(n):',
+  'while queue:',
+  'return dp[i-1]+dp[i-2]',
+  'O(n log n)',
+  'if visited[u]: continue',
+  'def bfs(graph):',
+  'class Node:',
+  '01001010',
+  'λx. x + 1',
+  'quicksort(arr)',
+  'y = softmax(z)',
+]
+
+const PROTEIN_NET = [
+  'STRING db',
+  'Cytoscape',
+  'PPI network',
+  'ESM2 embedding',
+  'AlphaFold',
+  'Gag protein',
+  'POL gene',
+  'LDHA',
+  'ADMET',
+]
+
+const DNA_RNA = [
+  'ATCG',
+  'AUGC',
+  "5'-ATG-3'",
+  'GAG-POL',
+  'dsDNA',
+  'mRNA',
+  'tRNA',
+  'Watson–Crick',
+]
+
+const MATH_STATS = [
+  'P(A|B)',
+  'μ ± σ',
+  'R² = 0.94',
+  '∫ f(x) dx',
+  'χ²',
+  'ANOVA',
+  '∇L(θ)',
+  'argmax',
+  'Σ xᵢ',
+]
 
 function Background() {
   const canvasRef = useRef<HTMLCanvasElement>(null)
@@ -37,6 +98,25 @@ function Background() {
       vy: (Math.random() - 0.5) * 0.00055,
       r: i % 11 === 0 ? 3.2 : 1.6,
       hub: i % 11 === 0,
+    }))
+
+    const labelPool: { text: string; colorKey: FloatingLabel['colorKey'] }[] = [
+      ...CODE_ALGO.map((text) => ({ text, colorKey: 'neutral' as const })),
+      ...MATH_STATS.map((text) => ({ text, colorKey: 'neutral' as const })),
+      ...PROTEIN_NET.map((text) => ({ text, colorKey: 'a' as const })),
+      ...DNA_RNA.map((text) => ({ text, colorKey: 'b' as const })),
+    ]
+
+    const labels: FloatingLabel[] = labelPool.map(({ text, colorKey }) => ({
+      x: Math.random(),
+      y: Math.random(),
+      vx: (Math.random() - 0.5) * 0.00035,
+      vy: (Math.random() - 0.5) * 0.00035,
+      size: 12 + Math.random() * 5,
+      text,
+      colorKey,
+      alpha: 0.14 + Math.random() * 0.12,
+      phase: Math.random() * Math.PI * 2,
     }))
 
     function resize() {
@@ -133,6 +213,22 @@ function Background() {
       ambient.addColorStop(1, 'rgba(0, 0, 0, 0)')
       ctx.fillStyle = ambient
       ctx.fillRect(0, 0, width, height)
+
+      ctx.font = '13px ui-monospace, Consolas, monospace'
+      ctx.textBaseline = 'middle'
+      for (const l of labels) {
+        if (!reduceMotion) {
+          l.x += l.vx
+          l.y += l.vy
+          if (l.x < -0.05 || l.x > 1.05) l.vx *= -1
+          if (l.y < -0.05 || l.y > 1.05) l.vy *= -1
+        }
+        const bob = reduceMotion ? 0 : Math.sin(t * 3 + l.phase) * 6
+        const color = l.colorKey === 'a' ? strandA : l.colorKey === 'b' ? strandB : dotColor
+        ctx.font = `${l.size}px ui-monospace, Consolas, monospace`
+        ctx.fillStyle = `rgba(${color}, ${l.alpha})`
+        ctx.fillText(l.text, l.x * width, l.y * height + bob)
+      }
 
       for (let h = 0; h < HELIX_STRANDS; h++) {
         const cx = width * ((h + 0.5) / HELIX_STRANDS)

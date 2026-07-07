@@ -21,6 +21,21 @@ interface FloatingLabel {
   phase: number
 }
 
+interface FloatingGraph {
+  x: number
+  y: number
+  vx: number
+  vy: number
+  size: number
+  kind: 'bar' | 'line' | 'scatter' | 'wave'
+  colorKey: 'neutral' | 'a' | 'b'
+  alpha: number
+  phase: number
+  data: number[]
+}
+
+const GRAPH_KINDS: FloatingGraph['kind'][] = ['bar', 'line', 'scatter', 'wave']
+
 const NODE_COUNT = 90
 const LINK_DIST = 150
 const MOUSE_DIST = 190
@@ -44,6 +59,7 @@ const PROTEIN_NET = ['STRING db', 'Cytoscape', 'PPI network', 'ADMET']
 
 const BIO_AI = [
   'ESM-2',
+  'AlphaFold2',
   'ProtBERT',
   'DNABERT',
   'Evo (genomic LLM)',
@@ -125,6 +141,72 @@ function Background() {
       alpha: 0.18 + Math.random() * 0.14,
       phase: Math.random() * Math.PI * 2,
     }))
+
+    const graphColorKeys: FloatingGraph['colorKey'][] = ['neutral', 'a', 'b']
+    const graphs: FloatingGraph[] = Array.from({ length: 14 }, (_, i) => {
+      const kind = GRAPH_KINDS[i % GRAPH_KINDS.length]
+      const pointCount = kind === 'bar' ? 5 : kind === 'scatter' ? 9 : 7
+      return {
+        x: Math.random(),
+        y: Math.random(),
+        vx: (Math.random() - 0.5) * 0.0003,
+        vy: (Math.random() - 0.5) * 0.0003,
+        size: 46 + Math.random() * 22,
+        kind,
+        colorKey: graphColorKeys[i % graphColorKeys.length],
+        alpha: 0.16 + Math.random() * 0.12,
+        phase: Math.random() * Math.PI * 2,
+        data: Array.from({ length: pointCount }, () => Math.random()),
+      }
+    })
+
+    function drawGraph(g: FloatingGraph, color: string) {
+      if (!ctx) return
+      const cx = g.x * width
+      const cy = g.y * height
+      const s = g.size
+      ctx.save()
+      ctx.translate(cx, cy)
+      ctx.strokeStyle = `rgba(${color}, ${g.alpha})`
+      ctx.fillStyle = `rgba(${color}, ${g.alpha})`
+      ctx.lineWidth = 1.2
+
+      if (g.kind === 'bar') {
+        const bw = s / (g.data.length * 1.6)
+        g.data.forEach((v, i) => {
+          const bh = v * s * 0.8
+          ctx.fillRect(i * bw * 1.6 - s / 2, s / 2 - bh, bw, bh)
+        })
+        ctx.strokeRect(-s / 2, -s / 2, s, s)
+      } else if (g.kind === 'line') {
+        ctx.beginPath()
+        g.data.forEach((v, i) => {
+          const px = (i / (g.data.length - 1)) * s - s / 2
+          const py = s / 2 - v * s
+          if (i === 0) ctx.moveTo(px, py)
+          else ctx.lineTo(px, py)
+        })
+        ctx.stroke()
+      } else if (g.kind === 'scatter') {
+        for (let i = 0; i < g.data.length; i += 2) {
+          const px = g.data[i] * s - s / 2
+          const py = (g.data[(i + 1) % g.data.length] * s - s / 2) * -1
+          ctx.beginPath()
+          ctx.arc(px, py, 1.6, 0, Math.PI * 2)
+          ctx.fill()
+        }
+      } else {
+        ctx.beginPath()
+        for (let px = -s / 2; px <= s / 2; px += 3) {
+          const py = Math.sin(px * 0.25 + t * 2 + g.phase) * (s * 0.22)
+          if (px === -s / 2) ctx.moveTo(px, py)
+          else ctx.lineTo(px, py)
+        }
+        ctx.stroke()
+      }
+
+      ctx.restore()
+    }
 
     function resize() {
       if (!canvas) return
@@ -235,6 +317,17 @@ function Background() {
         ctx.font = `${l.size}px ui-monospace, Consolas, monospace`
         ctx.fillStyle = `rgba(${color}, ${l.alpha})`
         ctx.fillText(l.text, l.x * width, l.y * height + bob)
+      }
+
+      for (const g of graphs) {
+        if (!reduceMotion) {
+          g.x += g.vx
+          g.y += g.vy
+          if (g.x < -0.05 || g.x > 1.05) g.vx *= -1
+          if (g.y < -0.05 || g.y > 1.05) g.vy *= -1
+        }
+        const color = g.colorKey === 'a' ? strandA : g.colorKey === 'b' ? strandB : dotColor
+        drawGraph(g, color)
       }
 
       for (let h = 0; h < HELIX_STRANDS; h++) {

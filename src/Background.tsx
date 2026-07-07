@@ -40,23 +40,30 @@ const CODE_ALGO = [
   'y = softmax(z)',
 ]
 
-const PROTEIN_NET = [
-  'STRING db',
-  'Cytoscape',
-  'PPI network',
-  'ESM2 embedding',
-  'AlphaFold',
-  'Gag protein',
-  'POL gene',
-  'LDHA',
-  'ADMET',
+const PROTEIN_NET = ['STRING db', 'Cytoscape', 'PPI network', 'ADMET']
+
+const BIO_AI = [
+  'ESM-2',
+  'AlphaFold2',
+  'ProtBERT',
+  'DNABERT',
+  'Evo (genomic LLM)',
+  'ProGen2',
+  'Transformer',
+  'BERT',
+  'GPT',
+  'CNN',
+  'LSTM',
+  'gradient descent',
+  'fine-tuning',
+  'attention head',
+  'embedding space',
 ]
 
 const DNA_RNA = [
   'ATCG',
   'AUGC',
   "5'-ATG-3'",
-  'GAG-POL',
   'dsDNA',
   'mRNA',
   'tRNA',
@@ -105,6 +112,7 @@ function Background() {
       ...MATH_STATS.map((text) => ({ text, colorKey: 'neutral' as const })),
       ...PROTEIN_NET.map((text) => ({ text, colorKey: 'a' as const })),
       ...DNA_RNA.map((text) => ({ text, colorKey: 'b' as const })),
+      ...BIO_AI.map((text) => ({ text, colorKey: 'a' as const })),
     ]
 
     const labels: FloatingLabel[] = labelPool.map(({ text, colorKey }) => ({
@@ -115,7 +123,7 @@ function Background() {
       size: 12 + Math.random() * 5,
       text,
       colorKey,
-      alpha: 0.14 + Math.random() * 0.12,
+      alpha: 0.08 + Math.random() * 0.07,
       phase: Math.random() * Math.PI * 2,
     }))
 
@@ -176,7 +184,7 @@ function Background() {
         const depth = (wave + 1) / 2
 
         if (i % rungEvery === 0) {
-          ctx.strokeStyle = `rgba(${strandA}, ${0.05 + depth * 0.05})`
+          ctx.strokeStyle = `rgba(${strandA}, ${0.03 + depth * 0.03})`
           ctx.lineWidth = 1
           ctx.beginPath()
           ctx.moveTo(x1, y)
@@ -189,7 +197,7 @@ function Background() {
       }
 
       for (const s of [0, 1]) {
-        ctx.strokeStyle = `rgba(${s === 0 ? strandA : strandB}, 0.22)`
+        ctx.strokeStyle = `rgba(${s === 0 ? strandA : strandB}, 0.13)`
         ctx.lineWidth = 1.6
         ctx.beginPath()
         const strandPts = points.filter((p) => p.s === s)
@@ -209,7 +217,7 @@ function Background() {
       const gx = mouse.x >= 0 && mouse.x <= 1 ? mouse.x * width : width * 0.5
       const gy = mouse.y >= 0 && mouse.y <= 1 ? mouse.y * height : height * 0.32
       const ambient = ctx.createRadialGradient(gx, gy, 0, gx, gy, Math.max(width, height) * 0.55)
-      ambient.addColorStop(0, `rgba(${glowColor}, 0.1)`)
+      ambient.addColorStop(0, `rgba(${glowColor}, 0.06)`)
       ambient.addColorStop(1, 'rgba(0, 0, 0, 0)')
       ctx.fillStyle = ambient
       ctx.fillRect(0, 0, width, height)
@@ -272,7 +280,7 @@ function Background() {
           const dy = ay - by
           const dist = Math.sqrt(dx * dx + dy * dy)
           if (dist < LINK_DIST) {
-            const alpha = (1 - dist / LINK_DIST) * (a.hub || b.hub ? 0.6 : 0.4)
+            const alpha = (1 - dist / LINK_DIST) * (a.hub || b.hub ? 0.38 : 0.24)
             ctx.strokeStyle = `rgba(${strandA}, ${alpha})`
             ctx.lineWidth = a.hub || b.hub ? 1.3 : 1
             ctx.beginPath()
@@ -288,7 +296,7 @@ function Background() {
         const mdy = ay - my
         const mdist = Math.sqrt(mdx * mdx + mdy * mdy)
         if (mdist < MOUSE_DIST) {
-          const alpha = (1 - mdist / MOUSE_DIST) * 0.8
+          const alpha = (1 - mdist / MOUSE_DIST) * 0.5
           ctx.strokeStyle = `rgba(${strandB}, ${alpha})`
           ctx.lineWidth = 1.4
           ctx.beginPath()
@@ -298,10 +306,10 @@ function Background() {
         }
 
         if (a.hub) {
-          ctx.shadowColor = `rgba(${glowColor}, 0.9)`
-          ctx.shadowBlur = 9
+          ctx.shadowColor = `rgba(${glowColor}, 0.6)`
+          ctx.shadowBlur = 7
         }
-        ctx.fillStyle = a.hub ? `rgba(${glowColor}, 0.9)` : `rgba(${dotColor}, 0.5)`
+        ctx.fillStyle = a.hub ? `rgba(${glowColor}, 0.6)` : `rgba(${dotColor}, 0.32)`
         ctx.beginPath()
         ctx.arc(ax, ay, a.r, 0, Math.PI * 2)
         ctx.fill()

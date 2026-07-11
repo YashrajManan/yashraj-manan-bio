@@ -144,50 +144,7 @@
 }
 
 .visit-count {
-  margin-bottom: 10px;
   letter-spacing: 0.4px;
-}
-
-.visit-thanks {
-  color: var(--accent);
-}
-
-.visit-form {
-  display: inline-flex;
-  gap: 8px;
-  align-items: center;
-
-  input {
-    font: inherit;
-    font-size: 14px;
-    padding: 6px 10px;
-    border-radius: 6px;
-    border: 1px solid var(--border);
-    background: var(--code-bg);
-    color: var(--text-h);
-    width: 180px;
-
-    &:focus {
-      outline: none;
-      border-color: var(--accent-border);
-    }
-  }
-
-  button {
-    font: inherit;
-    font-size: 14px;
-    padding: 6px 12px;
-    border-radius: 6px;
-    border: 1px solid var(--accent-border);
-    background: var(--accent-bg);
-    color: var(--accent);
-    cursor: pointer;
-
-    &:hover {
-      background: var(--accent-border);
-      color: var(--text-h);
-    }
-  }
 }
 
 .skills-grid {

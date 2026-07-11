@@ -1,5 +1,6 @@
 import './App.css'
 import Background from './Background'
+import VisitCounter from './VisitCounter'
 
 function App() {
   return (
@@ -9,7 +10,7 @@ function App() {
         <header className="resume-header">
           <div className="header-text">
             <h1>Yashraj</h1>
-            <p className="subtitle">M.Sc. Biotechnology &nbsp;|&nbsp; Computational Biology &amp; AI</p>
+            <p className="subtitle">M.Sc. Biotechnology &nbsp;|&nbsp; Computational Biology, Bioinformatics and AI</p>
             <p className="contact">
               New Delhi, India &nbsp;•&nbsp; +91 9958473180 &nbsp;•&nbsp;{' '}
               <a href="mailto:Yashraj90009@gmail.com">Yashraj90009@gmail.com</a> &nbsp;•&nbsp;{' '}
@@ -148,6 +149,11 @@ function App() {
       </section>
 
       <section className="resume-section">
+        <h2>Projects</h2>
+        <p className="coming-soon">To be published here soon.</p>
+      </section>
+
+      <section className="resume-section">
         <h2>Languages</h2>
         <ul>
           <li>English (Written &amp; Spoken)</li>
@@ -158,6 +164,7 @@ function App() {
         </ul>
       </section>
       </main>
+      <VisitCounter />
     </>
   )
 }

@@ -27,14 +27,23 @@ interface FloatingGraph {
   vx: number
   vy: number
   size: number
-  kind: 'bar' | 'line' | 'scatter' | 'wave'
+  kind: 'bar' | 'line' | 'scatter' | 'wave' | 'dna' | 'rna' | 'protein' | 'molecule'
   colorKey: 'neutral' | 'a' | 'b'
   alpha: number
   phase: number
   data: number[]
 }
 
-const GRAPH_KINDS: FloatingGraph['kind'][] = ['bar', 'line', 'scatter', 'wave']
+const GRAPH_KINDS: FloatingGraph['kind'][] = [
+  'bar',
+  'line',
+  'scatter',
+  'wave',
+  'dna',
+  'rna',
+  'protein',
+  'molecule',
+]
 
 const NODE_COUNT = 90
 const LINK_DIST = 150
@@ -143,7 +152,7 @@ function Background() {
     }))
 
     const graphColorKeys: FloatingGraph['colorKey'][] = ['neutral', 'a', 'b']
-    const graphs: FloatingGraph[] = Array.from({ length: 14 }, (_, i) => {
+    const graphs: FloatingGraph[] = Array.from({ length: 22 }, (_, i) => {
       const kind = GRAPH_KINDS[i % GRAPH_KINDS.length]
       const pointCount = kind === 'bar' ? 5 : kind === 'scatter' ? 9 : 7
       return {
@@ -195,7 +204,7 @@ function Background() {
           ctx.arc(px, py, 1.6, 0, Math.PI * 2)
           ctx.fill()
         }
-      } else {
+      } else if (g.kind === 'wave') {
         ctx.beginPath()
         for (let px = -s / 2; px <= s / 2; px += 3) {
           const py = Math.sin(px * 0.25 + t * 2 + g.phase) * (s * 0.22)
@@ -203,6 +212,80 @@ function Background() {
           else ctx.lineTo(px, py)
         }
         ctx.stroke()
+      } else if (g.kind === 'dna') {
+        const amp = s * 0.18
+        const h = s
+        for (const dir of [1, -1]) {
+          ctx.beginPath()
+          for (let y = -h / 2; y <= h / 2; y += 4) {
+            const x = Math.sin((y + t * 40 + g.phase * 20) * 0.25) * amp * dir
+            if (y === -h / 2) ctx.moveTo(x, y)
+            else ctx.lineTo(x, y)
+          }
+          ctx.stroke()
+        }
+        for (let y = -h / 2; y <= h / 2; y += 10) {
+          const x1 = Math.sin((y + t * 40 + g.phase * 20) * 0.25) * amp
+          ctx.beginPath()
+          ctx.moveTo(x1, y)
+          ctx.lineTo(-x1, y)
+          ctx.stroke()
+        }
+      } else if (g.kind === 'rna') {
+        const amp = s * 0.22
+        const h = s
+        ctx.beginPath()
+        for (let y = -h / 2; y <= h / 2; y += 3) {
+          const x = Math.sin((y + t * 50 + g.phase * 20) * 0.3) * amp
+          if (y === -h / 2) ctx.moveTo(x, y)
+          else ctx.lineTo(x, y)
+        }
+        ctx.stroke()
+        for (let y = -h / 2; y <= h / 2; y += 9) {
+          const x = Math.sin((y + t * 50 + g.phase * 20) * 0.3) * amp
+          ctx.beginPath()
+          ctx.arc(x, y, 1.4, 0, Math.PI * 2)
+          ctx.fill()
+        }
+      } else if (g.kind === 'protein') {
+        const turns = 4
+        const amp = s * 0.28
+        const h = s
+        ctx.lineWidth = 1.8
+        ctx.beginPath()
+        for (let i = 0; i <= 60; i++) {
+          const p = i / 60
+          const y = -h / 2 + p * h
+          const x = Math.sin(p * Math.PI * 2 * turns + g.phase) * amp
+          if (i === 0) ctx.moveTo(x, y)
+          else ctx.lineTo(x, y)
+        }
+        ctx.stroke()
+      } else {
+        const r = s * 0.28
+        const sides = 6
+        ctx.beginPath()
+        for (let i = 0; i <= sides; i++) {
+          const ang = (Math.PI * 2 * i) / sides - Math.PI / 2
+          const x = Math.cos(ang) * r
+          const y = Math.sin(ang) * r
+          if (i === 0) ctx.moveTo(x, y)
+          else ctx.lineTo(x, y)
+        }
+        ctx.stroke()
+        for (const ang of [-Math.PI / 2, Math.PI / 2]) {
+          const x0 = Math.cos(ang) * r
+          const y0 = Math.sin(ang) * r
+          const x1 = Math.cos(ang) * (r + s * 0.2)
+          const y1 = Math.sin(ang) * (r + s * 0.2)
+          ctx.beginPath()
+          ctx.moveTo(x0, y0)
+          ctx.lineTo(x1, y1)
+          ctx.stroke()
+          ctx.beginPath()
+          ctx.arc(x1, y1, 1.8, 0, Math.PI * 2)
+          ctx.fill()
+        }
       }
 
       ctx.restore()

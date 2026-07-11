@@ -1,17 +1,15 @@
 import { useEffect, useState } from 'react'
-import { doc, increment, onSnapshot, setDoc } from 'firebase/firestore'
-import { db } from './firebase'
+
+const COUNTER_URL = 'https://api.counterapi.dev/v1/yashraj-manan-bio/page-visits/up'
 
 function VisitCounter() {
   const [count, setCount] = useState<number | null>(null)
 
   useEffect(() => {
-    const visitsRef = doc(db, 'stats', 'visits')
-    setDoc(visitsRef, { count: increment(1) }, { merge: true }).catch(() => {})
-    const unsubscribe = onSnapshot(visitsRef, (snap) => {
-      setCount(snap.data()?.count ?? null)
-    })
-    return () => unsubscribe()
+    fetch(COUNTER_URL)
+      .then((res) => res.json())
+      .then((data) => setCount(data.count))
+      .catch(() => {})
   }, [])
 
   return (

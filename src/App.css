@@ -23,9 +23,9 @@
 
 .resume-header {
   display: flex;
-  align-items: flex-start;
+  align-items: center;
   justify-content: space-between;
-  gap: 24px;
+  gap: 32px;
   border-bottom: 1px solid var(--border);
   padding-bottom: 24px;
   margin-bottom: 32px;
@@ -67,6 +67,7 @@
   height: 158px;
   border-radius: 50%;
   object-fit: cover;
+  object-position: 50% 8%;
   border: 2px solid var(--accent-border);
   box-shadow: var(--shadow);
   flex-shrink: 0;

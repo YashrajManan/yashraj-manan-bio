@@ -15,6 +15,12 @@ function App() {
               <a href="mailto:Yashraj90009@gmail.com">Yashraj90009@gmail.com</a> &nbsp;•&nbsp;{' '}
               <a href="https://linkedin.com/in/yashraj-manan-072976189" target="_blank" rel="noreferrer">
                 linkedin.com/in/yashraj-manan-072976189
+              </a> &nbsp;•&nbsp;{' '}
+              <a href="https://github.com/YashrajManan" target="_blank" rel="noreferrer">
+                github.com/YashrajManan
+              </a> &nbsp;•&nbsp;{' '}
+              <a href="https://yashrajmanan.github.io/yashraj-manan-bio/" target="_blank" rel="noreferrer">
+                yashrajmanan.github.io/yashraj-manan-bio
               </a>
             </p>
           </div>
@@ -143,8 +149,14 @@ function App() {
 
       <section className="resume-section">
         <h2>Languages</h2>
-        <p>English (Written &amp; Spoken) • Hindi (Written &amp; Spoken) • German (Written &amp; Spoken, ein bisschen) • Punjabi (Written &amp; Spoken) • Urdu (Spoken)</p>
-        </section>
+        <ul>
+          <li>English (Written &amp; Spoken)</li>
+          <li>Hindi (Written &amp; Spoken)</li>
+          <li>German (Written &amp; Spoken, ein bisschen)</li>
+          <li>Punjabi (Written &amp; Spoken)</li>
+          <li>Urdu (Spoken)</li>
+        </ul>
+      </section>
       </main>
     </>
   )

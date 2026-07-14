@@ -31,15 +31,25 @@ function App() {
       <section className="resume-section">
         <h2>Research Interests</h2>
         <p>
-          My research interests lie at the intersection of computational biology, evolutionary genomics, and
-          bioinformatics. I am particularly fascinated by how biological sequences — genomes, proteins, and
-          functional elements — evolve across deep evolutionary time, and what these changes reveal about
-          fundamental principles of life. I am drawn to large-scale comparative genomics approaches that uncover
-          the forces shaping genome architecture and biological diversity. More broadly, I am excited by the
-          application of machine learning and AI to evolutionary biology — particularly how computational models
-          can reveal patterns in genomic data that traditional methods cannot. I aim to work at the interface of
-          bioinformatics, evolutionary biology, and data-driven biology, contributing to questions that span
-          multiple domains of life.
+          My research interests are deliberately wide-ranging across computational biology and bioinformatics,
+          and part of what draws me is how much larger the field is than the familiar route from omics analysis
+          through interaction networks to candidate drug targets. I work within that pipeline — integrating
+          multi-omics data across genomics, transcriptomics, and proteomics, and modeling how molecular
+          components interact and can be therapeutically targeted or repurposed — but I'm equally drawn to
+          problems it doesn't reach. I'm most at home with alignment-free, self-supervised deep learning and
+          genomic and protein language models that learn functional representations directly from unaligned
+          sequence, rather than inheriting the assumptions alignment imposes. I'm drawn to molecular evolution
+          and phylodynamics — inferring selection, tracing how pathogen genomes change over time, and predicting
+          the functional effect of variants rather than cataloguing them. And I'm interested in the structural
+          and chemical side, where the same representation ideas carry from biological sequence into chemical
+          space, letting proteins and the molecules acting on them be modeled jointly instead of through docking
+          alone. What ties this together is a preference for learned rather than hand-engineered representations,
+          methods honest about noise and missingness, and predictions that hold up against evolutionary,
+          structural, or clinical evidence — pointing toward pathogen evolution, drug resistance, and precision
+          medicine. By temperament I'm broad rather than narrow, so I treat the areas I currently work in as a
+          base to build outward from: I'm keen to grow into single-cell genomics, regulatory genomics, generative
+          design of proteins and molecules, and mechanistic systems biology as my research matures, and to keep
+          following compelling problems across the field wherever they lead.
         </p>
       </section>
 
